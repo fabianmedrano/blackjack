@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <string.h>
+
+typedef struct StructCarta{
+    int numero;
+	char *tipo;
+	char *nombre;
+	
+	int id;
+}Carta;
+
+typedef struct NodoLista{
+    Carta carta;
+    struct NodoLista * siguiente;
+}NodoC;
+
+typedef struct{
+    NodoC * ultimo;
+    NodoC * primero;
+}ListaCarta;
+
+void vacia(ListaCarta *lista){
+    lista->primero = NULL;
+    lista->ultimo = NULL;
+}
+
+int esVacia(ListaCarta * lista){
+   return !(lista->primero == NULL);// 0 si esta vacia
+}
+
+void insertarCarta(ListaCarta *lista, int numero,char *tipo,char * nombre){
+    NodoC * nuevo;
+    if((nuevo = (NodoC *) malloc(sizeof(NodoC))) == NULL){
+        fprintf(stderr, "malloc termino inesperadamente\n");
+    }else{
+        nuevo->carta.numero = numero;
+        nuevo->carta.nombre= nombre;
+        nuevo->carta.tipo = tipo;
+        
+        nuevo->siguiente = NULL;
+        if(lista->primero == NULL && lista->ultimo == NULL){
+            nuevo->carta.id = 0; // <-------------
+            lista->primero = nuevo;
+            lista->ultimo = nuevo;
+        }else{
+        	nuevo->carta.id = lista->ultimo->carta.id++;// <-----------
+            lista->ultimo->siguiente = nuevo;
+			lista->ultimo = lista->ultimo->siguiente;
+        }
+    }
+}
+
+void eliminar(ListaCarta * lista, Carta *carta){
+
+	NodoC* auxiliar = lista->primero;
+	NodoC* anterior = auxiliar;
+	
+	if(esVacia(lista)){
+		if( & auxiliar->carta == carta){//si es el primer elemento
+			if(lista->primero == lista->ultimo){//si solo hay uno
+				vacia(lista);		
+			}else{//si hay mas de uno
+				lista->primero = lista->primero->siguiente;
+			}
+		}else{// si no es el primero
+			while(auxiliar != NULL){
+				if(&auxiliar->carta == carta){
+					if(auxiliar->siguiente == NULL){ // si es el ultimo
+						lista->ultimo = anterior;
+					}else{//si no es el ultimo
+						anterior->siguiente = auxiliar->siguiente;
+					}
+					auxiliar = NULL;
+				}
+				anterior = auxiliar;
+				auxiliar = auxiliar->siguiente;
+			}
+		}
+	}
+}
+
+
+void mostrarCartas(ListaCarta * lista){
+	NodoC * auxiliar = lista->primero;
+}
+
+
+
+
+
+
+	
+
