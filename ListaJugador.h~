@@ -1,0 +1,321 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <string.h>
+
+typedef struct StructCarta{
+    int numero;
+	char *color;
+
+}Ficha;
+
+typedef struct NodoLista{
+	int posicion;
+    Ficha ficha;
+    struct NodoLista * siguiente;
+}Nodo;
+
+
+typedef struct{
+	int tamano;
+    Nodo * ultimo;
+    Nodo * primero;
+}Lista;
+
+
+typedef struct NodoMesa{
+    Lista apiada;
+    struct NodoMesa * siguiente;
+}NodoM;
+
+typedef struct{
+    NodoM * ultimo;
+    NodoM * primero;
+}ListaMesa;
+
+
+void vacia(Lista *lista){
+    lista->primero = NULL;
+    lista->ultimo = NULL;
+}
+
+int esVacia(Lista lista){
+   return(lista.primero == NULL);
+}
+
+void insertar(Lista *lista, int elem,char *co,int posi){
+
+    Nodo * nuevo;
+    if((nuevo = (Nodo *) malloc(sizeof(Nodo))) == NULL){
+        fprintf(stderr, "malloc termino inesperadamente\n");
+    }
+    else{
+        nuevo->ficha.numero = elem;
+        nuevo->ficha.color= co;
+        nuevo->posicion = posi;
+        nuevo->siguiente = NULL;
+        if(lista->primero == NULL && lista->ultimo == NULL){
+            lista->primero = nuevo;
+            lista->ultimo = nuevo;
+     
+        }else{
+            lista->ultimo->siguiente = nuevo;
+			lista->ultimo = lista->ultimo->siguiente;
+        }
+    }
+}
+
+
+void insertarInicio(Lista *lista, int elem,char *co,int posi){
+
+    Nodo * nuevo;
+    if((nuevo = (Nodo *) malloc(sizeof(Nodo))) == NULL){
+        fprintf(stderr, "malloc termino inesperadamente\n");
+    }
+    else{
+        nuevo->ficha.numero = elem;
+        nuevo->ficha.color= co;
+        nuevo->posicion = posi;
+        nuevo->siguiente =NULL;
+        if(lista->primero == NULL && lista->ultimo == NULL){
+            lista->primero = nuevo;
+            lista->ultimo = nuevo;
+        }else{
+        	nuevo->siguiente = lista->primero;
+        	lista->primero = nuevo;
+        }
+    }
+}
+
+Lista corregirposicion(Lista *lista){
+
+	Nodo *auxiliar = lista->primero;
+	int i ;
+	
+	for(i =1 ;auxiliar!=NULL;i++){
+		if(auxiliar->posicion != i){
+			auxiliar->posicion =i;
+		}
+		auxiliar = auxiliar->siguiente;
+	}	
+	return *lista;
+}
+
+Lista eliminarFicha(Lista *lista , Ficha ficha){
+
+	Nodo *auxiliar = (Nodo *) malloc(sizeof(Nodo));
+	Nodo *anterior  =(Nodo *) malloc(sizeof(Nodo));
+	
+	if((lista->primero->ficha.numero == ficha.numero) && (lista->primero->ficha.color == ficha.color)){
+		if(lista->primero->siguiente ==NULL){
+			vacia(lista);
+		}else{
+			lista->primero= lista->primero->siguiente;
+		}
+	}else{
+		auxiliar =lista->primero;
+		anterior=auxiliar;
+			
+		while(auxiliar != NULL){
+		
+			if((auxiliar->ficha.numero == ficha.numero) && (auxiliar->ficha.color == ficha.color)){
+		
+				if(auxiliar ==lista->ultimo){
+					anterior->siguiente =NULL;
+				}else{
+					anterior->siguiente =auxiliar->siguiente;
+				}
+			}
+			anterior =auxiliar;
+			auxiliar = auxiliar->siguiente;	
+		}
+	}
+	return *lista;
+}
+
+
+void destruir(Lista *lista){
+    Nodo *auxiliar;
+
+    while(lista->primero != NULL){
+        auxiliar = lista->primero;
+        lista->primero = auxiliar->siguiente;
+        free(auxiliar);
+    }
+}
+
+void mostrar(Lista lista){
+    Nodo *indice;
+    indice = lista.primero;
+    while(indice != NULL){
+        printf("%d | %s | %i \n", indice->ficha.numero, indice->ficha.color, indice->posicion);
+        indice = indice->siguiente;
+    }
+     printf("\n");
+}
+
+void mostrarHorizontal(Lista lista){
+    Nodo *indice;
+    indice = lista.primero;
+    while(indice != NULL){
+        printf("%d*%s*%i |-| ", indice->ficha.numero, indice->ficha.color, indice->posicion);
+        indice = indice->siguiente;
+    }
+     printf("\n");
+}
+void mostrarFicha(Ficha ficha){
+    printf("Ficha %d || %s", ficha.numero,ficha.color);
+    printf("\n");
+}
+
+Lista ordenarNumero_Colores(Lista *lista){
+
+	Nodo * i;
+	Nodo *j;
+	Nodo *auxiliar  = (Nodo *) malloc(sizeof(Nodo));
+	i= lista->primero ;
+	
+	while( i != NULL ){
+		j= lista->primero;		
+		while( j !=NULL ){
+			if(i->ficha.numero < j->ficha.numero){
+			
+				auxiliar->ficha.numero = i->ficha.numero;
+				auxiliar->ficha.color = i->ficha.color;
+				
+				i->ficha.numero = j->ficha.numero;
+				i->ficha.color = j->ficha.color;
+				
+				j->ficha.numero = auxiliar->ficha.numero;
+				j->ficha.color = auxiliar->ficha.color;				
+			}
+			j=j->siguiente; 
+		}
+		i =i->siguiente;
+	}
+	return *lista;
+}
+
+
+Lista ordenarColores(Lista * lista){
+	char color[4][10] ={"Amarillo","Azul","Negro","Rojo"};
+	int p ;
+	Nodo * i;
+	Nodo *j ;
+	
+	char *colorAnterior  = "Amarillo";
+	
+	Nodo *auxiliar= (Nodo *) malloc(sizeof(Nodo));
+	
+	i = lista->primero;
+	for(p =0; p<4;p++){
+	//	printf("ordenar color %s\n",color[p]);
+		j = lista->primero->siguiente;
+		while(j!=NULL && i != NULL ){
+			//j = i;
+			while((i != NULL ) && (strcmp (i->ficha.color, color[p]) ==0 ) && (strcmp (i->ficha.color, colorAnterior) ==0)){
+					i = i->siguiente;
+			}
+			if((strcmp (i->ficha.color, colorAnterior) ==0) && i->siguiente !=NULL){i = i->siguiente;}
+			if((strcmp (i->ficha.color, colorAnterior) ==0) && i->siguiente !=NULL){i = i->siguiente;}
+			if((strcmp (i->ficha.color, colorAnterior) ==0) && i->siguiente !=NULL){i = i->siguiente;}
+			//	printf("color actual ->%s           colorAnterior %s\n",i->ficha.color, colorAnterior);
+			//printf("color de ficha actual %s , colo indice %s\n", i->ficha.color, j->ficha.color );
+			//mostrarHorizontal(*lista);		
+			if(strcmp(j->ficha.color, color[p]) == 0){
+			//printf("iguales \n");
+				auxiliar->ficha.numero = i->ficha.numero;
+				auxiliar->ficha.color = i->ficha.color;
+	
+				i->ficha.numero = j->ficha.numero;
+				i->ficha.color = j->ficha.color;
+	
+				j->ficha.numero = auxiliar->ficha.numero;
+				j->ficha.color = auxiliar->ficha.color;
+			}
+			j =j->siguiente;	
+		}
+		colorAnterior= color[p]; 
+	}
+	return *lista;
+}
+
+
+Lista escalera(Lista * lista){
+	Nodo * i;
+	Nodo *j;
+	Nodo *auxiliar  = (Nodo *) malloc(sizeof(Nodo));
+	i= lista->primero ;
+	
+	while( i != NULL ){
+		j= lista->primero;		
+		while( j !=NULL ){
+			if((i->ficha.numero < j->ficha.numero) &&  (strcmp (i->ficha.color, j->ficha.color) ==0 )){
+			
+				auxiliar->ficha.numero = i->ficha.numero;
+				auxiliar->ficha.color = i->ficha.color;
+				
+				i->ficha.numero = j->ficha.numero;
+				i->ficha.color = j->ficha.color;
+				
+				j->ficha.numero = auxiliar->ficha.numero;
+				j->ficha.color = auxiliar->ficha.color;				
+			}
+			j=j->siguiente; 
+		}
+		i =i->siguiente;
+	}
+	return *lista;
+}
+	
+	
+/*******************************************************************************
+********************************************************************************
+*******************************************************************************/
+
+void vaciaMesa(ListaMesa *lista){
+    lista->primero = NULL;
+    lista->ultimo = NULL;
+}
+
+int esVaciaMesa(ListaMesa lista){
+   return(lista.primero == NULL);
+}
+
+void insertarAMesa(ListaMesa *listam, Lista lista){
+
+    NodoM * nuevo;
+    if((nuevo = (NodoM *) malloc(sizeof(NodoM))) == NULL){
+        fprintf(stderr, "malloc termino inesperadamente\n");
+    }
+    else{
+        nuevo->apiada = lista;
+        nuevo->siguiente = NULL;
+        if(listam->primero == NULL && listam->ultimo == NULL){
+            listam->primero = nuevo;
+            listam->ultimo = nuevo;
+        }else{
+            listam->ultimo->siguiente = nuevo;
+			listam->ultimo = listam->ultimo->siguiente;
+        }
+    }
+}
+
+void mostrarHorizontalApiadas(ListaMesa lista){
+    NodoM *indiceListas;
+    indiceListas = lista.primero;
+    Nodo * indice;
+    printf("\n                                           Sobre la mesa\n");
+    while(indiceListas != NULL){
+    	indice = indiceListas->apiada.primero;
+		while(indice !=NULL){
+		
+    		printf("%d*%s*%i |-| ", indice->ficha.numero, indice->ficha.color, indice->posicion);
+    		indice = indice->siguiente;
+		}
+     	printf("\n");
+        indiceListas = indiceListas->siguiente;
+    }
+    printf("----------------------------------------------------------------------------------------------------\n");
+    
+}
