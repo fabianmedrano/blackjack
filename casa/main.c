@@ -19,7 +19,7 @@ int id_zone =0;
 typedef struct PartesJuego{
     ListaJugador judadoresJuego;
 	ListaCarta cartasJuego;
-   	int turno;
+   	int turno ;
 }Juego;
 
 Juego  *partesJuego;
@@ -39,15 +39,22 @@ void  crearMemoriaConpartida(){
 }
 
 void juego(){
-	crearJugadores(&partesJuego->judadoresJuego, 5);
-	mostrarJugadores(&partesJuego->judadoresJuego);
+	int estadoDelJuego =1; 
 
 
-	vaciaListaCarta(&partesJuego->cartasJuego);
-	crearCartas(&partesJuego->cartasJuego);
-	mostrarCartas(&partesJuego->cartasJuego);
-	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
-	mostrarJugadores(&partesJuego->judadoresJuego);
+	while(estadoDelJuego){
+
+		if(partesJuego->turno == 0){
+			printf("turno  de la casa\n" );
+			partesJuego->turno = partesJuego->turno +1;;
+
+		}else{
+			printf("turno jugador %i\n", partesJuego->turno );
+		}
+
+	}
+
+
 
 }
 
@@ -56,9 +63,21 @@ void liberarMemoria(){
    shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL);
    
 }
+void prepararJuego(){
+	crearJugadores(&partesJuego->judadoresJuego, 2);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+
+
+	vaciaListaCarta(&partesJuego->cartasJuego);
+	crearCartas(&partesJuego->cartasJuego);
+	mostrarCartas(&partesJuego->cartasJuego);
+	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+}
 
 void main(){
 	crearMemoriaConpartida();
+	prepararJuego();
 	juego();
 
 	liberarMemoria();
