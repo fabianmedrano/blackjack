@@ -79,12 +79,13 @@ void mostrarJugadores(ListaJugador *lista){
 	NodoJ * indiceJugador =lista->primero;
 	NodoC * indiceCarta = NULL;
 	while(indiceJugador != NULL){
-		printf("Jugador %i, %i\n",indiceJugador->jugador.numero ,esVaciaListaCarta(&indiceJugador->jugador.cartas));
+		printf("Jugador %i tieneCartas %i\n",indiceJugador->jugador.numero ,esVaciaListaCarta(&indiceJugador->jugador.cartas));
 		indiceCarta = indiceJugador->jugador.cartas.primero;
 		while(indiceCarta != NULL){
-			printf("%i\n",indiceCarta->carta.numero );
+			printf("-carta %s -tipo %s -valor  %i -id %i \n",indiceCarta->carta.nombre,indiceCarta->carta.tipo, indiceCarta->carta.numero,indiceCarta->carta.id );
 			indiceCarta =indiceCarta->siguiente;
 		}
+		printf("\n");
 		indiceJugador = indiceJugador->siguiente;
 	}
 }

@@ -43,12 +43,12 @@ void juego(){
 	mostrarJugadores(&partesJuego->judadoresJuego);
 
 
-/*	vaciaListaCarta(&partesJuego.cartasJuego);
-	crearCartas(&partesJuego.cartasJuego);
-	mostrarCartas(&partesJuego.cartasJuego);
-	repartirCartas(&partesJuego.cartasJuego ,&partesJuegojudadoresJuego);
-	mostrarJugadores(&partesJuego.judadoresJuego);
-*/
+	vaciaListaCarta(&partesJuego->cartasJuego);
+	crearCartas(&partesJuego->cartasJuego);
+	mostrarCartas(&partesJuego->cartasJuego);
+	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+
 }
 
 void liberarMemoria(){

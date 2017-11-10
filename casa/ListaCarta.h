@@ -62,9 +62,9 @@ void eliminarCarta(ListaCarta * lista, Carta *carta){
 	
 	if(esVaciaListaCarta(lista)){
 
-		printf("%i --\n", ( & auxiliar->carta == carta));
+		//printf("%i --\n", ( & auxiliar->carta == carta));
 		if( & auxiliar->carta == carta){//si es el primer elemento
-			printf(" ----------\n");
+		//	printf(" ----------\n");
 			if(lista->primero == lista->ultimo){//si solo hay uno
 				vaciaListaCarta(lista);		
 			}else{//si hay mas de uno
@@ -72,7 +72,7 @@ void eliminarCarta(ListaCarta * lista, Carta *carta){
 			}
 		}else{// si no es el primero
 			while(auxiliar != NULL){
-				printf("%i..\n", ( & auxiliar->carta == carta));
+			//	printf("%i..\n", ( & auxiliar->carta == carta));
 				if(&auxiliar->carta == carta){
 					if(auxiliar == lista->ultimo){ // si es el ultimo
 						anterior->siguiente =NULL;
@@ -89,6 +89,7 @@ void eliminarCarta(ListaCarta * lista, Carta *carta){
 void mostrarCarta(Carta * carta){
 	printf("-carta %s -tipo %s -valor  %i -id %i \n",carta->nombre, carta->tipo, carta->numero,carta->id );
 }
+
 void ingresarABaraja(ListaCarta *lista,ListaCarta *cartasJugador ,int posicion){
 	NodoC * auxiliar = lista->primero;
 	int i ;
