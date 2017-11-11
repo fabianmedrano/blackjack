@@ -4,6 +4,7 @@
 #include "ListaCarta.h"
 
 typedef struct StructJugador{
+	int tomado;
     int numero;
 	ListaCarta cartas;
 }Jugador;
@@ -32,6 +33,8 @@ void insertarJugador(ListaJugador *lista, int numero){
     if((nuevo = (NodoJ *) malloc(sizeof(NodoJ))) == NULL){
         fprintf(stderr, "malloc termino inesperadamente\n");
     }else{
+
+        nuevo->jugador.tomado = 0;
         nuevo->jugador.numero = numero;
         vaciaListaCarta(&nuevo->jugador.cartas);
   

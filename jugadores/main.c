@@ -10,6 +10,32 @@ pthread_t esperaCambio;
 
 int turnoAnterior;
 
+Jugador * jugadorSeleccionado;
+
+void tomarJugador(){
+	printf("hola 1\n");
+	jugadorSeleccionado = NULL;
+	printf("hola 1\n");
+	printf("------- %i\n", partesJuego->judadoresJuego.primero->jugador.numero);
+
+	NodoJ *auxiliar =(NodoJ *) malloc(sizeof(NodoJ));
+	auxiliar = partesJuego->judadoresJuego.primero->siguiente;
+	printf("hola 1\n");
+	while (auxiliar != NULL ){
+		if( auxiliar->jugador.tomado == 0){
+			auxiliar->jugador.tomado = 1;
+			jugadorSeleccionado = &auxiliar->jugador;
+			printf("Eres el jugador %i\n", jugadorSeleccionado->numero);
+			auxiliar = NULL;
+		}
+	}
+	if(jugadorSeleccionado == NULL){
+		printf("No puede jugar, ya estan todos\n");
+		pthread_exit(NULL);
+	}
+
+}
+
 void esperarCambio(){
 	int sinCambio =1;
 	while(sinCambio){
@@ -26,22 +52,18 @@ void esperarCambio(){
 void juego(){
 	int estadoDelJuego =1; 
 	
-
 	while(estadoDelJuego){
 
 		if(partesJuego->turno != 0 ){
 			printf("turno jugador %i\n", partesJuego->turno );
-
 			if(partesJuego->judadoresJuego.ultimo->jugador.numero == partesJuego->turno){
 				partesJuego->turno =0;
 			}else{
 				partesJuego->turno = partesJuego->turno +1;
 			}
-
 		}else{
 			printf("turno de la casa\n" );
 		}
-
 		pthread_create(&esperaCambio , NULL ,(void *) &esperarCambio , NULL ) ;
 		pthread_join ( esperaCambio , NULL ) ;
 	}
@@ -50,26 +72,17 @@ void juego(){
 
 
 void prepararJuego(){
-	crearJugadores(&partesJuego->judadoresJuego, 2);
-	mostrarJugadores(&partesJuego->judadoresJuego);
 
-
-	vaciaListaCarta(&partesJuego->cartasJuego);
-	crearCartas(&partesJuego->cartasJuego);
-	mostrarCartas(&partesJuego->cartasJuego);
-	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
-	mostrarJugadores(&partesJuego->judadoresJuego);
+	turnoAnterior =1;
 }
+
+
 
 void main(){
 	crearMemoriaConpartida();
 	prepararJuego();
+	tomarJugador();
 	juego();
 
-	liberarMemoria();
-
-
-
-
-	
+	liberarMemoria();	
 }

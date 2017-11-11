@@ -17,16 +17,17 @@ typedef struct PartesJuego{
 }Juego;
 
 
-Juego  *partesJuego;
+Juego   * partesJuego;
 
 void  crearMemoriaConpartida(){
+	
 	key = ftok(FILEKEY, KEY);
    
    id_zone = shmget (key, sizeof(Juego), 0777 | IPC_CREAT);
 
    printf ("ID zone shared memory: %i\n", id_zone);
 
-   partesJuego = (Juego *)shmat (id_zone,0 , 0);
+   partesJuego = (Juego *)shmat (id_zone,(Juego *)0 , 0);
 
 }
 

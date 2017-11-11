@@ -28,11 +28,12 @@ void esperarCambio(){
 
 
 void juego(){
-	int estadoDelJuego =1; 
+	int estadoDelJuego = 1; 
 
 
 	while(estadoDelJuego){
 
+		printf("------- %i\n", partesJuego->judadoresJuego.primero->jugador.numero);
 		if(partesJuego->turno == 0){
 			printf("turno  de la casa\n" );
 			partesJuego->turno = partesJuego->turno +1;;
@@ -42,7 +43,6 @@ void juego(){
 		}
 		pthread_create(&esperaCambio , NULL ,(void *) &esperarCambio , NULL ) ;
 		pthread_join ( esperaCambio , NULL ) ;
-		//pthread_exit(NULL);
 	}
 }
 
@@ -56,6 +56,8 @@ void prepararJuego(){
 	mostrarCartas(&partesJuego->cartasJuego);
 	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
 	mostrarJugadores(&partesJuego->judadoresJuego);
+	partesJuego->turno =1;
+	turnoAnterior =1;
 }
 
 void main(){
