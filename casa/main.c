@@ -1,42 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>  
-#include <sys/ipc.h>
-#include <errno.h>
-#include <sys/shm.h> /* shm*  */
+
+#include <pthread.h>
+
 #include "LogicaJuego.h"
-
-#define FILEKEY "/bin/cat"
-
-#define KEY 1300
-#define MAXBUF 10
-
-
-
-int key =0;
-int id_zone =0;
-
-typedef struct PartesJuego{
-    ListaJugador judadoresJuego;
-	ListaCarta cartasJuego;
-   	int turno ;
-}Juego;
-
-Juego  *partesJuego;
+#include "MemoriaCompartida.h"
 
 
 
 
-void  crearMemoriaConpartida(){
-	key = ftok(FILEKEY, KEY);
-   
-   id_zone = shmget (key, sizeof(Juego), 0777 | IPC_CREAT);
+pthread_t esperaCambio;
 
-   printf ("ID zone shared memory: %i\n", id_zone);
+int turnoAnterior;
 
-   partesJuego = (Juego *)shmat (id_zone,0 , 0);
+void esperarCambio(){
+	int sinCambio =1;
+	while(sinCambio){
 
+		if(turnoAnterior != partesJuego->turno){
+			sinCambio = 0;
+			turnoAnterior = partesJuego->turno;
+		}
+		
+	 usleep (1000000);
+ 	}
 }
+
 
 void juego(){
 	int estadoDelJuego =1; 
@@ -51,22 +40,16 @@ void juego(){
 		}else{
 			printf("turno jugador %i\n", partesJuego->turno );
 		}
-
+		pthread_create(&esperaCambio , NULL ,(void *) &esperarCambio , NULL ) ;
+		pthread_join ( esperaCambio , NULL ) ;
+		//pthread_exit(NULL);
 	}
-
-
-
 }
 
-void liberarMemoria(){
-	shmdt ((Juego * )partesJuego);
-   shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL);
-   
-}
+
 void prepararJuego(){
 	crearJugadores(&partesJuego->judadoresJuego, 2);
 	mostrarJugadores(&partesJuego->judadoresJuego);
-
 
 	vaciaListaCarta(&partesJuego->cartasJuego);
 	crearCartas(&partesJuego->cartasJuego);
@@ -81,9 +64,4 @@ void main(){
 	juego();
 
 	liberarMemoria();
-
-
-
-
-	
 }
