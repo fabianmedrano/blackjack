@@ -14,6 +14,7 @@ int id_zone =0;
 
 typedef struct PartesJuego{
 	Carta cartasDePaso;
+	int estado;
 	int numeroDeJugadores;
 	int cartaTomada ;
    	int turno;
@@ -35,5 +36,5 @@ void  crearMemoriaConpartida(){
 
 void liberarMemoria(){
 	shmdt ((Juego  *)&partesJuego);
-   shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL); 
+	shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL); 
 }
