@@ -6,7 +6,6 @@ typedef struct StructCarta{
     int numero;
  	char *tipo;
 	char *nombre;
-	
 	int id;
 }Carta;
 
@@ -40,11 +39,9 @@ void insertarCarta(ListaCarta *lista, int numero,char *tipo,char * nombre){
         
         nuevo->siguiente = NULL;
         if(lista->primero == NULL && lista->ultimo == NULL){
-            nuevo->carta.id = 0; // <-------------
             lista->primero = nuevo;
             lista->ultimo = nuevo;
         }else{
-        	nuevo->carta.id = lista->ultimo->carta.id +1;// <-----------
             lista->ultimo->siguiente = nuevo;
 			lista->ultimo = lista->ultimo->siguiente;
         }
