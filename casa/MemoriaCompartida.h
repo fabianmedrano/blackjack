@@ -2,6 +2,7 @@
 #include <sys/ipc.h>
 #include <errno.h>
 #include <sys/shm.h> /* shm*  */
+#include "LogicaJuego.h"
 
 #define FILEKEY "/bin/cat"
 
@@ -17,22 +18,16 @@ typedef struct PartesJuego{
 }Juego;
 
 
-Juego   * partesJuego;
+Juego partesJuego;
 
 void  crearMemoriaConpartida(){
-	
 	key = ftok(FILEKEY, KEY);
-   
-   id_zone = shmget (key, sizeof(Juego), 0777 | IPC_CREAT);
-
-   printf ("ID zone shared memory: %i\n", id_zone);
-
-   partesJuego = (Juego *)shmat (id_zone,(Juego *)0 , 0);
-
+	id_zone = shmget (key, sizeof(Juego), 0777 | IPC_CREAT);
+	printf ("ID zone shared memory: %i\n", id_zone);
+	partesJuego = *(Juego *)shmat (id_zone,0 , 0);
 }
 
 void liberarMemoria(){
-	shmdt ((Juego * )partesJuego);
-   shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL);
-   
+	shmdt ((Juego  *)&partesJuego);
+   shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL); 
 }

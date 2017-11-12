@@ -3,7 +3,7 @@
 
 #include <pthread.h>
 
-#include "LogicaJuego.h"
+//#include "LogicaJuego.h"
 #include "MemoriaCompartida.h"
 
 pthread_t esperaCambio;
@@ -11,15 +11,16 @@ pthread_t esperaCambio;
 int turnoAnterior;
 
 Jugador * jugadorSeleccionado;
+Juego partesJuegolocal;
 
 void tomarJugador(){
 	printf("hola 1\n");
 	jugadorSeleccionado = NULL;
 	printf("hola 1\n");
-	printf("------- %i\n", partesJuego->judadoresJuego.primero->jugador.numero);
+	printf("------- %i\n", partesJuegolocal.judadoresJuego.primero->jugador.numero);
 
 	NodoJ *auxiliar =(NodoJ *) malloc(sizeof(NodoJ));
-	auxiliar = partesJuego->judadoresJuego.primero->siguiente;
+	auxiliar = partesJuegolocal.judadoresJuego.primero->siguiente;
 	printf("hola 1\n");
 	while (auxiliar != NULL ){
 		if( auxiliar->jugador.tomado == 0){
@@ -40,9 +41,9 @@ void esperarCambio(){
 	int sinCambio =1;
 	while(sinCambio){
 
-		if(turnoAnterior != partesJuego->turno){
+		if(turnoAnterior != partesJuego.turno){
 			sinCambio = 0;
-			turnoAnterior = partesJuego->turno;
+			turnoAnterior = partesJuego.turno;
 		}
 		
 	 usleep (1000000);
@@ -54,12 +55,12 @@ void juego(){
 	
 	while(estadoDelJuego){
 
-		if(partesJuego->turno != 0 ){
-			printf("turno jugador %i\n", partesJuego->turno );
-			if(partesJuego->judadoresJuego.ultimo->jugador.numero == partesJuego->turno){
-				partesJuego->turno =0;
+		if(partesJuego.turno != 0 ){
+			printf("turno jugador %i\n", partesJuego.turno );
+			if(partesJuego.judadoresJuego.ultimo->jugador.numero == partesJuego.turno){
+				partesJuego.turno =0;
 			}else{
-				partesJuego->turno = partesJuego->turno +1;
+				partesJuego.turno = partesJuego.turno +1;
 			}
 		}else{
 			printf("turno de la casa\n" );
@@ -72,7 +73,7 @@ void juego(){
 
 
 void prepararJuego(){
-
+	partesJuegolocal = partesJuego ;
 	turnoAnterior =1;
 }
 
