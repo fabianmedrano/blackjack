@@ -3,7 +3,7 @@
 
 #include <pthread.h>
 
-//#include "LogicaJuego.h"
+#include "LogicaJuego.h"
 #include "MemoriaCompartida.h"
 
 
@@ -11,7 +11,16 @@
 
 pthread_t esperaCambio;
 
+
+
 int turnoAnterior;
+
+typedef struct PartesJuegolocal{
+    ListaJugador judadoresJuego;
+	ListaCarta cartasJuego;
+}JuegoLocal;
+
+JuegoLocal partesJuegoLocal;
 
 void esperarCambio(){
 	int sinCambio =1;
@@ -33,7 +42,6 @@ void juego(){
 
 	while(estadoDelJuego){
 
-		printf("------- %i\n", partesJuego.judadoresJuego.primero->jugador.numero);
 		if(partesJuego.turno == 0){
 			printf("turno  de la casa\n" );
 			partesJuego.turno = partesJuego.turno +1;;
@@ -46,16 +54,15 @@ void juego(){
 	}
 }
 
-
 void prepararJuego(){
-	crearJugadores(&partesJuego.judadoresJuego, 2);
-	mostrarJugadores(&partesJuego.judadoresJuego);
+	crearJugadores(&partesJuegoLocal.judadoresJuego, 2);
+	mostrarJugadores(&partesJuegoLocal.judadoresJuego);
 
-	vaciaListaCarta(&partesJuego.cartasJuego);
-	crearCartas(&partesJuego.cartasJuego);
-	mostrarCartas(&partesJuego.cartasJuego);
-	repartirCartas(&partesJuego.cartasJuego ,&partesJuego.judadoresJuego);
-	mostrarJugadores(&partesJuego.judadoresJuego);
+	vaciaListaCarta(&partesJuegoLocal.cartasJuego);
+	crearCartas(&partesJuegoLocal.cartasJuego);
+	mostrarCartas(&partesJuegoLocal.cartasJuego);
+	repartirCartas(&partesJuegoLocal.cartasJuego ,&partesJuegoLocal.judadoresJuego);
+	mostrarJugadores(&partesJuegoLocal.judadoresJuego);
 	partesJuego.turno =1;
 	turnoAnterior =1;
 }
@@ -64,7 +71,7 @@ void main(){
 	prepararJuego();
 	crearMemoriaConpartida();
 	prepararJuego();
-	juego();
+	//juego();
 
 	liberarMemoria();
 }

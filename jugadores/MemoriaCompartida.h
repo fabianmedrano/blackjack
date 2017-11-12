@@ -13,8 +13,9 @@ int key =0;
 int id_zone =0;
 
 typedef struct PartesJuego{
-    ListaJugador judadoresJuego;
-	ListaCarta cartasJuego;
+	Carta cartasDePaso;
+	int numeroDeJugadores;
+	int cartaTomada ;
    	int turno;
 }Juego;
 

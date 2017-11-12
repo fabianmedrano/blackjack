@@ -2,7 +2,6 @@
 #include <sys/ipc.h>
 #include <errno.h>
 #include <sys/shm.h> /* shm*  */
-#include "LogicaJuego.h"
 
 #define FILEKEY "/bin/cat"
 
@@ -12,8 +11,7 @@ int key =0;
 int id_zone =0;
 
 typedef struct PartesJuego{
-    ListaJugador judadoresJuego;
-	ListaCarta cartasJuego;
+	Carta cartasDePaso;
    	int turno ;
 }Juego;
 

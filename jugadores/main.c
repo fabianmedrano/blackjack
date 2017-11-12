@@ -11,25 +11,26 @@ pthread_t esperaCambio;
 int turnoAnterior;
 
 Jugador * jugadorSeleccionado;
-Juego partesJuegolocal;
+
+typedef struct PartesJuegolocal{
+    ListaJugador judadoresJuego;
+	ListaCarta cartasJuego;
+}JuegoLocal;
+
+JuegoLocal partesJuegoLocal;
 
 void tomarJugador(){
 	printf("hola 1\n");
 	jugadorSeleccionado = NULL;
 	printf("hola 1\n");
-	printf("------- %i\n", partesJuegolocal.judadoresJuego.primero->jugador.numero);
 
-	NodoJ *auxiliar =(NodoJ *) malloc(sizeof(NodoJ));
-	auxiliar = partesJuegolocal.judadoresJuego.primero->siguiente;
-	printf("hola 1\n");
-	while (auxiliar != NULL ){
-		if( auxiliar->jugador.tomado == 0){
-			auxiliar->jugador.tomado = 1;
-			jugadorSeleccionado = &auxiliar->jugador;
-			printf("Eres el jugador %i\n", jugadorSeleccionado->numero);
-			auxiliar = NULL;
-		}
+	if( auxiliar->jugador.tomado == 0){
+		auxiliar->jugador.tomado = 1;
+		jugadorSeleccionado = &auxiliar->jugador;
+		printf("Eres el jugador %i\n", jugadorSeleccionado->numero);
+		auxiliar = NULL;
 	}
+
 	if(jugadorSeleccionado == NULL){
 		printf("No puede jugar, ya estan todos\n");
 		pthread_exit(NULL);
@@ -57,7 +58,7 @@ void juego(){
 
 		if(partesJuego.turno != 0 ){
 			printf("turno jugador %i\n", partesJuego.turno );
-			if(partesJuego.judadoresJuego.ultimo->jugador.numero == partesJuego.turno){
+			if(partesJuego.numeroDeJugadores == partesJuego.turno){
 				partesJuego.turno =0;
 			}else{
 				partesJuego.turno = partesJuego.turno +1;
@@ -73,7 +74,6 @@ void juego(){
 
 
 void prepararJuego(){
-	partesJuegolocal = partesJuego ;
 	turnoAnterior =1;
 }
 
