@@ -12,7 +12,10 @@ int id_zone =0;
 
 typedef struct PartesJuego{
 	Carta cartasDePaso;
-   	int turno ;
+	int estado;
+	int numeroDeJugadores;
+	int cartaTomada ;
+   	int turno;
 }Juego;
 
 
