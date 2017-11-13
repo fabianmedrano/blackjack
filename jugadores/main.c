@@ -3,7 +3,7 @@
 
 #include <pthread.h>
 
-//#include "LogicaJuego.h"
+#include "LogicaJuego.h"
 #include "MemoriaCompartida.h"
 // El programa jugador solo usa la lista de cartas
 pthread_t esperaCambio;
@@ -12,6 +12,7 @@ pthread_t esperaCarta;
 
 int turnoAnterior;
 
+<<<<<<< HEAD
 
 typedef struct PartesJuegolocal{
     Jugador jugadorJuego;
@@ -40,8 +41,6 @@ void tomarJugador(){
 		if(partesJuegoLocal.jugadorJuego.numero == 0 ){
 			partesJuegoLocal.jugadorJuego.numero = partesJuego.turno ; // se le asigna  un  numero al jugador
 			printf("turno %i\n", partesJuego.turno  );
-			printf("Eres el jugador %i\n", partesJuegoLocal.jugadorJuego.numero);
-
 			for(  cartasPasadas = 0; cartasPasadas < 2 ; cartasPasadas++){
 				 // es perar a que la casa pase la carta
 				pthread_create(&esperaCarta , NULL ,(void *) &esperarCarta , NULL ) ;
@@ -62,6 +61,8 @@ void tomarJugador(){
 
 }
 
+=======
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 void esperarCambio(){
 	int sinCambio =1;
 	while(sinCambio){
@@ -78,18 +79,29 @@ void esperarCambio(){
 void juego(){
 	int estadoDelJuego =1; 
 	
+
 	while(estadoDelJuego){
 
+<<<<<<< HEAD
 		if(partesJuego.turno != 0 ){
 			printf("turno jugador %i\n", partesJuego.turno );
 			if(partesJuego.numeroDeJugadores == partesJuego.turno){
 				partesJuego.turno =0;
+=======
+		if(partesJuego->turno != 0 ){
+			printf("turno jugador %i\n", partesJuego->turno );
+
+			if(partesJuego->judadoresJuego.ultimo->jugador.numero == partesJuego->turno){
+				partesJuego->turno =0;
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 			}else{
 				partesJuego.turno = partesJuego.turno +1;
 			}
+
 		}else{
 			printf("turno de la casa\n" );
 		}
+
 		pthread_create(&esperaCambio , NULL ,(void *) &esperarCambio , NULL ) ;
 		pthread_join ( esperaCambio , NULL ) ;
 	}
@@ -98,10 +110,15 @@ void juego(){
 
 
 void prepararJuego(){
+<<<<<<< HEAD
 	vaciaListaCarta(&partesJuegoLocal.cartasJuego);
 	turnoAnterior = 1;
 	partesJuegoLocal.jugadorJuego.numero = 0;
 }
+=======
+	crearJugadores(&partesJuego->judadoresJuego, 2);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 
 void esperarInicioJuego(){
 	int sinCambio =1;
@@ -114,13 +131,27 @@ void esperarInicioJuego(){
  	}
 }
 
+	vaciaListaCarta(&partesJuego->cartasJuego);
+	crearCartas(&partesJuego->cartasJuego);
+	mostrarCartas(&partesJuego->cartasJuego);
+	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+}
 
 void main(){
 	crearMemoriaConpartida();
 	prepararJuego();
-	tomarJugador();
-	esperarInicioJuego();
+<<<<<<< HEAD
+	//tomarJugador();
+	//esperarInicioJuego();
+=======
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 	juego();
 
-	liberarMemoria();	
+	liberarMemoria();
+
+
+
+
+	
 }

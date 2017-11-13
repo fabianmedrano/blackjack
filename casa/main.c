@@ -18,6 +18,7 @@ pthread_t esperaTomarCarta;
 * y el juego debe de seguir (aumentar el turno)
 *
 */
+
 int turnoAnterior;
 
 typedef struct PartesJuegolocal{
@@ -62,33 +63,6 @@ void pasarJugador(){
 
 		indiceJugador = indiceJugador->siguiente;
 	}
-
-	//int cartasPasadas;
-//	if( partesJuego.turno >= partesJuego.numeroDeJugadores){
-		//if(partesJuegoLocal.jugadorJuego.numero == 0 ){
-		//	partesJuegoLocal.jugadorJuego.numero = partesJuego.turno ; // se le asigna  un  numero al jugador
-		//	printf("Eres el jugador %i\n", partesJuegoLocal.jugadorJuego.numero);
-/*
-			for(  cartasPasadas = 0; cartasPasadas < 2 ; cartasPasadas++){
-				 // es perar a que la casa pase la carta
-				pthread_create(&esperaCarta , NULL ,(void *) &esperarCarta , NULL ) ;
-				pthread_join ( esperaCarta , NULL ) ;
-				///////////////////////////////
-				// aqui debe el jugador de resivir sus cartas
-				insertarCarta(&partesJuegoLocal.cartasJuego, partesJuego.cartasDePaso.numero,partesJuego.cartasDePaso.tipo,partesJuego.cartasDePaso.nombre);
-						
-				partesJuego.cartaTomada =1; //  la casa debe dar otra carta cuando cartaTomada es = a 1
-			}
-			partesJuego.turno =partesJuego.turno+1;//cuanto el turno cambia la casa debe preparar se para pasar las cartas al proximo jugador
-
-
-	//	}
-	}else{
-
-		printf("No puede jugar, ya estan todos\n");
-		pthread_exit(NULL);
-	}
-*/
 }
 
 ////////////////
@@ -108,12 +82,15 @@ void esperarCambio(){
 
 
 void juego(){
-	int estadoDelJuego = 1; 
-
+	int estadoDelJuego =1; 
 
 	while(estadoDelJuego){
-
+<<<<<<< HEAD
 		if(partesJuego.turno == 0){
+=======
+
+		if(partesJuego->turno == 0){
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 			printf("turno  de la casa\n" );
 			partesJuego.turno = partesJuego.turno +1;;
 
@@ -122,10 +99,12 @@ void juego(){
 		}
 		pthread_create(&esperaCambio , NULL ,(void *) &esperarCambio , NULL ) ;
 		pthread_join ( esperaCambio , NULL ) ;
+		//pthread_exit(NULL);
 	}
 }
 
 void prepararJuego(){
+<<<<<<< HEAD
 	crearJugadores(&partesJuegoLocal.judadoresJuego, 2);
 	mostrarJugadores(&partesJuegoLocal.judadoresJuego);
 
@@ -141,14 +120,25 @@ void prepararJuego(){
 
 	partesJuego.turno = 1;
 	turnoAnterior = 1;
+=======
+	crearJugadores(&partesJuego->judadoresJuego, 2);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+
+	vaciaListaCarta(&partesJuego->cartasJuego);
+	crearCartas(&partesJuego->cartasJuego);
+	mostrarCartas(&partesJuego->cartasJuego);
+	repartirCartas(&partesJuego->cartasJuego ,&partesJuego->judadoresJuego);
+	mostrarJugadores(&partesJuego->judadoresJuego);
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 }
 
 void main(){
-	prepararJuego();
+	//printf("turno  de la casa" );
 	crearMemoriaConpartida();
+	//printf("turno  de la casa" );
 	prepararJuego();
 	//pasarJugador();
-	//juego();
+	juego();
 	printf("turno jugador %i\n", partesJuego.turno );
 	liberarMemoria();
 }

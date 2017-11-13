@@ -18,14 +18,29 @@ typedef struct PartesJuego{
    	int turno;
 }Juego;
 
-
-Juego partesJuego;
+<<<<<<< HEAD
+  partesJuego;
 
 void  crearMemoriaConpartida(){
 	key = ftok(FILEKEY, KEY);
 	id_zone = shmget (key, sizeof(Juego), 0777 | IPC_CREAT);
 	printf ("ID zone shared memory: %i\n", id_zone);
+	
 	partesJuego = *(Juego *)shmat (id_zone,0 , 0);
+=======
+
+Juego  *partesJuego;
+
+void  crearMemoriaConpartida(){
+	key = ftok(FILEKEY, KEY);
+   
+   id_zone = shmget (key, sizeof(Juego), 0777 | IPC_CREAT);
+
+   printf ("ID zone shared memory: %i\n", id_zone);
+
+   partesJuego = (Juego *)shmat (id_zone,0 , 0);
+
+>>>>>>> parent of b48d258... intento de mas de dos procesos
 }
 
 void liberarMemoria(){
