@@ -9,7 +9,15 @@
 pthread_t esperaCambio;
 pthread_t esperaTomarCarta;
 
-
+/*
+* cuando un jugador pida una carta 
+* la casa debe de tomar una carta random,
+* insertarla en la lista local del jugador al que le correspode el turno
+* cambiar carta tomada a 0 para que el gugador la tome
+* el jugador debe cambiar carta tomada a 1, para indicar que la tomo
+* y el juego debe de seguir (aumentar el turno)
+*
+*/
 int turnoAnterior;
 
 typedef struct PartesJuegolocal{
@@ -36,8 +44,11 @@ void pasarJugador(){
 	NodoC * indiceCartas;
 
 	while (indiceJugador != NULL){
+
 		indiceCartas = indiceJugador->jugador.cartas.primero;
+
 		while(indiceCartas != NULL){
+
 			partesJuego.cartasDePaso.numero = indiceCartas->carta.numero ;
 			partesJuego.cartasDePaso.tipo = indiceCartas->carta.tipo;
 			partesJuego.cartasDePaso.nombre = indiceCartas->carta.nombre;
@@ -46,11 +57,11 @@ void pasarJugador(){
 			pthread_create(&esperaTomarCarta , NULL ,(void *) &esperarATomarCarta , NULL ) ;
 			pthread_join ( esperaTomarCarta , NULL ) ;
 		}
+		// esperar al siguiente jugador
+		//esperaCambio (); 
 
 		indiceJugador = indiceJugador->siguiente;
 	}
-
-
 
 	//int cartasPasadas;
 //	if( partesJuego.turno >= partesJuego.numeroDeJugadores){
@@ -123,15 +134,21 @@ void prepararJuego(){
 	mostrarCartas(&partesJuegoLocal.cartasJuego);
 	repartirCartas(&partesJuegoLocal.cartasJuego ,&partesJuegoLocal.judadoresJuego);
 	mostrarJugadores(&partesJuegoLocal.judadoresJuego);
-	partesJuego.turno =1;
-	turnoAnterior =1;
+
+	partesJuego.estado  = 0;
+	partesJuego.numeroDeJugadores = 0;
+	partesJuego.cartaTomada = 0;
+
+	partesJuego.turno = 1;
+	turnoAnterior = 1;
 }
 
 void main(){
 	prepararJuego();
 	crearMemoriaConpartida();
 	prepararJuego();
+	//pasarJugador();
 	//juego();
-
+	printf("turno jugador %i\n", partesJuego.turno );
 	liberarMemoria();
 }

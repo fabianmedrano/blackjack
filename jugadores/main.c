@@ -12,12 +12,10 @@ pthread_t esperaCarta;
 
 int turnoAnterior;
 
-Jugador * jugadorSeleccionado;
 
 typedef struct PartesJuegolocal{
     Jugador jugadorJuego;
 	ListaCarta cartasJuego;
-
 }JuegoLocal;
 
 JuegoLocal partesJuegoLocal;
@@ -41,6 +39,7 @@ void tomarJugador(){
 	if( partesJuego.turno >= partesJuego.numeroDeJugadores){
 		if(partesJuegoLocal.jugadorJuego.numero == 0 ){
 			partesJuegoLocal.jugadorJuego.numero = partesJuego.turno ; // se le asigna  un  numero al jugador
+			printf("turno %i\n", partesJuego.turno  );
 			printf("Eres el jugador %i\n", partesJuegoLocal.jugadorJuego.numero);
 
 			for(  cartasPasadas = 0; cartasPasadas < 2 ; cartasPasadas++){
@@ -100,8 +99,8 @@ void juego(){
 
 void prepararJuego(){
 	vaciaListaCarta(&partesJuegoLocal.cartasJuego);
-	turnoAnterior =1;
-	partesJuegoLocal.jugadorJuego.numero =0;
+	turnoAnterior = 1;
+	partesJuegoLocal.jugadorJuego.numero = 0;
 }
 
 void esperarInicioJuego(){

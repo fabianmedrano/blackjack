@@ -84,7 +84,7 @@ void mostrarJugadores(ListaJugador *lista){
 		printf("Jugador %i tieneCartas %i\n",indiceJugador->jugador.numero ,esVaciaListaCarta(&indiceJugador->jugador.cartas));
 		indiceCarta = indiceJugador->jugador.cartas.primero;
 		while(indiceCarta != NULL){
-			printf("-carta %s -tipo %s -valor  %i -id %i \n",indiceCarta->carta.nombre,indiceCarta->carta.tipo, indiceCarta->carta.numero,indiceCarta->carta.id );
+			printf("-carta %s -tipo %s -valor   \n" , indiceCarta->carta.nombre,indiceCarta->carta.tipo );
 			indiceCarta =indiceCarta->siguiente;
 		}
 		printf("\n");

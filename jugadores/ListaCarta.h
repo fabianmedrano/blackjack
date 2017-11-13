@@ -83,7 +83,7 @@ void eliminarCarta(ListaCarta * lista, Carta *carta){
 	}
 }
 void mostrarCarta(Carta * carta){
-	printf("-carta %s -tipo %s -valor  %i  \n",carta->nombre, carta->tipo);
+	printf("-carta %s -tipo %s   \n",carta->nombre, carta->tipo);
 }
 
 void ingresarABaraja(ListaCarta *lista,ListaCarta *cartasJugador ,int posicion){
@@ -101,7 +101,7 @@ void ingresarABaraja(ListaCarta *lista,ListaCarta *cartasJugador ,int posicion){
 void mostrarCartas(ListaCarta * lista){
 	NodoC * auxiliar = lista->primero;
 	while(auxiliar != NULL){
-		printf("-carta %s -tipo %s -valor  %i \n",auxiliar->carta.nombre, auxiliar->carta.tipo);
+		printf("-carta %s -tipo %s    \n",auxiliar->carta.nombre, auxiliar->carta.tipo);
 		auxiliar = auxiliar->siguiente;
 	}
 }
