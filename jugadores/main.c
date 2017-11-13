@@ -43,7 +43,7 @@ void tomarJugador(){
 			partesJuegoLocal.jugadorJuego.numero = partesJuego.turno ; // se le asigna  un  numero al jugador
 			printf("Eres el jugador %i\n", partesJuegoLocal.jugadorJuego.numero);
 
-			for(  cartasPasadas =0; cartasPasadas <2 ; cartasPasadas++){
+			for(  cartasPasadas = 0; cartasPasadas < 2 ; cartasPasadas++){
 				 // es perar a que la casa pase la carta
 				pthread_create(&esperaCarta , NULL ,(void *) &esperarCarta , NULL ) ;
 				pthread_join ( esperaCarta , NULL ) ;
@@ -53,7 +53,6 @@ void tomarJugador(){
 						
 				partesJuego.cartaTomada =1; //  la casa debe dar otra carta cuando cartaTomada es = a 1
 			}
-			
 			partesJuego.turno =partesJuego.turno+1;//cuanto el turno cambia la casa debe preparar se para pasar las cartas al proximo jugador
 		}
 	}else{

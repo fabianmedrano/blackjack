@@ -6,7 +6,6 @@ typedef struct StructCarta{
     int numero;
  	char *tipo;
 	char *nombre;
-	int id;
 }Carta;
 
 typedef struct NodoLista{
@@ -84,7 +83,7 @@ void eliminarCarta(ListaCarta * lista, Carta *carta){
 	}
 }
 void mostrarCarta(Carta * carta){
-	printf("-carta %s -tipo %s -valor  %i -id %i \n",carta->nombre, carta->tipo, carta->numero,carta->id );
+	printf("-carta %s -tipo %s -valor  %i  \n",carta->nombre, carta->tipo);
 }
 
 void ingresarABaraja(ListaCarta *lista,ListaCarta *cartasJugador ,int posicion){
@@ -102,7 +101,7 @@ void ingresarABaraja(ListaCarta *lista,ListaCarta *cartasJugador ,int posicion){
 void mostrarCartas(ListaCarta * lista){
 	NodoC * auxiliar = lista->primero;
 	while(auxiliar != NULL){
-		printf("-carta %s -tipo %s -valor  %i -id %i \n",auxiliar->carta.nombre, auxiliar->carta.tipo, auxiliar->carta.numero,auxiliar->carta.id );
+		printf("-carta %s -tipo %s -valor  %i \n",auxiliar->carta.nombre, auxiliar->carta.tipo);
 		auxiliar = auxiliar->siguiente;
 	}
 }
